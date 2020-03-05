@@ -42,7 +42,7 @@ def review_analysis(target_file):
     text_file_rdd = text_file_rdd.filter(lambda x: x[0] != "marketplace")
     text_file_rdd = text_file_rdd.map(lambda x: [x[5], x[7], x[12]]) #just grabs the important stuff
     text_file_rdd = text_file_rdd.filter(lambda x: "oily" in x[2])
-    text_file_rdd = text_file_rdd.map(lambda x: [x[1], x[2]]).groupByKey().mapValues(list).collect()
+    text_file_rdd = text_file_rdd.map(lambda x: [x[1], x[2]]).groupByKey().collect()
     return text_file_rdd
 
 
@@ -62,6 +62,7 @@ if __name__ == "__main__":
     log(str(number_of_records(file_name)))
     log(str(get_title(file_name)))
     results = review_analysis(file_name)
+    log(results)
     for key in results:
         log(str(key))
         log(str(results[key]))
