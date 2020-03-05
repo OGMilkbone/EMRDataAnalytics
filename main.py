@@ -62,7 +62,7 @@ if __name__ == "__main__":
     log(str(number_of_records(file_name)))
     log(str(get_title(file_name)))
     results = review_analysis(file_name)
-    log(results)
+    log(str(results))
     for key in results:
         log(str(key))
         log(str(results[key]))
