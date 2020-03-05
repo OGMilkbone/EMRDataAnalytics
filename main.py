@@ -32,7 +32,7 @@ def log(output):
 def clear_resources():
     #Clears the common resources used by the program
     #Just the log file for now
-    with open('logs/logfile.txt', 'w') as outfile:
+    with open('logs/logfile.txt', 'w+') as outfile:
         outfile.write('')
 
 
@@ -42,6 +42,7 @@ if __name__ == "__main__":
         log("A file name is required as an argument at minimum")
         exit(-1)
 
+    clear_resources()
     file_name = argv[1]
     split_file_name = file_name.split('.')
     extension = split_file_name[len(split_file_name)-1]
