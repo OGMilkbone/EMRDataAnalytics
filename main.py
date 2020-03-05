@@ -39,9 +39,9 @@ def review_analysis(target_file):
     text_file_rdd = sc.textFile(target_file)
     text_file_rdd = text_file_rdd.map(lambda x: x.split("\t"))
     #remove header
-    text_file_rdd = text_file_rdd.filter(lambda x: x[0] == "marketplace")
+    text_file_rdd = text_file_rdd.filter(lambda x: x[0] != "marketplace")
     text_file_rdd = text_file_rdd.map(lambda x: [x[5], x[7], x[12]]) #just grabs the important stuff
-    text_file_rdd = text_file_rdd.filter(lambda x: x[0] not in x[2])
+    text_file_rdd = text_file_rdd.filter(lambda x: x[0] in x[2])
     text_file_rdd = text_file_rdd.map(lambda x: [x[1], 1]).countByKey()
     return text_file_rdd
 
