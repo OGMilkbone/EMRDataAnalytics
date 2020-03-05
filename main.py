@@ -31,6 +31,12 @@ def clear_resources():
     with open('logs/logfile.txt', 'w+') as outfile:
         outfile.write('')
 
+def get_title(target_file):
+    text_file_rdd = sc.textFile(target_file)
+    return text_file_rdd.first()
+
+
+
 
 if __name__ == "__main__":
     if len(argv) < 2:
@@ -45,3 +51,4 @@ if __name__ == "__main__":
         log("Warning: This program is designed to process tsv files, other file types are unsupported")
 
     log(str(number_of_records(file_name)))
+    log(str(get_title(file_name)))
