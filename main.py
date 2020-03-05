@@ -35,25 +35,26 @@ def get_title(target_file):
     text_file_rdd = sc.textFile(target_file)
     return text_file_rdd.first()
 
-def review_analysis(target_file):
+def review_analysis(target_file, term):
     text_file_rdd = sc.textFile(target_file)
     text_file_rdd = text_file_rdd.map(lambda x: x.split("\t"))
     #remove header
     text_file_rdd = text_file_rdd.filter(lambda x: x[0] != "marketplace")
     text_file_rdd = text_file_rdd.map(lambda x: [x[5], x[7], x[12]]) #just grabs the important stuff
-    text_file_rdd = text_file_rdd.filter(lambda x: "oily" in x[2])
+    text_file_rdd = text_file_rdd.filter(lambda x: term in x[2])
     text_file_rdd = text_file_rdd.map(lambda x: [x[1], x[2]]).groupByKey().mapValues(list).collect()
     return text_file_rdd
 
 
 
 if __name__ == "__main__":
-    if len(argv) < 2:
-        log("A file name is required as an argument at minimum")
+    if len(argv) < 3:
+        log("A file name and a search word is required as an argument at minimum")
         exit(-1)
 
     clear_resources()
     file_name = argv[1]
+    search_term = argv[2]
     split_file_name = file_name.split('.')
     extension = split_file_name[len(split_file_name) - 1]
     if extension != 'tsv':
@@ -61,7 +62,7 @@ if __name__ == "__main__":
 
     log(str(number_of_records(file_name)))
     log(str(get_title(file_name)))
-    results = review_analysis(file_name)
+    results = review_analysis(file_name, search_term)
     log(str(results))
     for key, value in results:
         log(str(key))
